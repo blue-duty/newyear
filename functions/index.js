@@ -173,7 +173,7 @@ export async function onRequest(context) {
                         const span = document.createElement("span");
                         span.textContent = char;
                         span.className = "character";
-                        span.style.animationDelay = \`${index * 0.1}s\`;
+                        span.style.animationDelay = \`\${index * 0.1}s\`;
                         blessing.appendChild(span);
                     });
                 });
@@ -357,7 +357,7 @@ export async function onRequest(context) {
         </body>
     </html>`;
 
-  return new Response(JSON.stringify({ blessing }), {
-    headers: { "Content-Type": "application/json" },
+  return new Response(htmlTemplate, {
+    headers: { "Content-Type": "text/html" },
   });
 }
