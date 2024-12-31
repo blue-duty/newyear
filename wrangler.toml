@@ -1,0 +1,3 @@
+name = "my-cloudflare-project"
+compatibility_date = "2024-12-31"
+main = "functions/_worker.js"
