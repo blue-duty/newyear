@@ -91,38 +91,40 @@
     <body>
         <canvas id="fireworks"></canvas>
         <div class="message-container">
-            <div class="message" id="blessing">加载中...</div>
+            <div class="message" id="blessing">${blessing}</div>
         </div>
 
         <script>
             // 为每个字符添加动画
-            window.addEventListener('DOMContentLoaded', () => {
-                const blessing = document.getElementById('blessing');
+            window.addEventListener("DOMContentLoaded", () => {
+                const blessing = document.getElementById("blessing");
                 const text = blessing.textContent;
-                blessing.textContent = '';
+                blessing.textContent = "";
 
                 [...text].forEach((char, index) => {
-                    const span = document.createElement('span');
+                    const span = document.createElement("span");
                     span.textContent = char;
-                    span.className = 'character';
-                    span.style.animationDelay = \`\${index * 0.1}s\`;
+                    span.className = "character";
+                    span.style.animationDelay = `${index * 0.1}s`;
                     blessing.appendChild(span);
                 });
             });
 
-            // Firework class 定义部分保持不变
+            // Firework class
             class Firework {
                 constructor(canvas) {
                     this.canvas = canvas;
-                    this.ctx = canvas.getContext('2d');
+                    this.ctx = canvas.getContext("2d");
                     this.particles = [];
                     this.hue = Math.random() * 360;
                     this.type = Math.floor(Math.random() * 3);
                 }
 
                 createParticles(x, y) {
-                    const particleCount = this.type === 0 ? 80 : this.type === 1 ? 100 : 120;
-                    const spreadFactor = this.type === 0 ? 8 : this.type === 1 ? 12 : 6;
+                    const particleCount =
+                        this.type === 0 ? 80 : this.type === 1 ? 100 : 120;
+                    const spreadFactor =
+                        this.type === 0 ? 8 : this.type === 1 ? 12 : 6;
 
                     for (let i = 0; i < particleCount; i++) {
                         let angle, velocity;
@@ -141,11 +143,14 @@
                             vx: Math.cos(angle) * velocity,
                             vy: Math.sin(angle) * velocity,
                             size: Math.random() * 3 + 2,
-                            hue: this.type === 1 ? this.hue + Math.random() * 50 - 25 : this.hue,
+                            hue:
+                                this.type === 1
+                                    ? this.hue + Math.random() * 50 - 25
+                                    : this.hue,
                             alpha: 1,
                             decay: Math.random() * 0.02 + 0.005,
                             brightness: Math.random() * 30 + 70,
-                            trail: []
+                            trail: [],
                         };
                         this.particles.push(particle);
                     }
@@ -154,7 +159,11 @@
                 update() {
                     this.particles.forEach((particle, index) => {
                         if (this.type === 1) {
-                            particle.trail.push({ x: particle.x, y: particle.y, alpha: particle.alpha });
+                            particle.trail.push({
+                                x: particle.x,
+                                y: particle.y,
+                                alpha: particle.alpha,
+                            });
                             if (particle.trail.length > 5) {
                                 particle.trail.shift();
                             }
@@ -174,46 +183,85 @@
                 }
 
                 draw() {
-                    this.particles.forEach(particle => {
+                    this.particles.forEach((particle) => {
                         if (this.type === 1 && particle.trail.length > 0) {
-                            particle.trail.forEach(point => {
+                            particle.trail.forEach((point) => {
                                 this.ctx.beginPath();
-                                this.ctx.arc(point.x, point.y, particle.size * 0.5, 0, Math.PI * 2);
-                                this.ctx.fillStyle = 'hsla(' + particle.hue + ', 100%, ' + particle.brightness + '%, ' + (point.alpha * 0.5) + ')';
+                                this.ctx.arc(
+                                    point.x,
+                                    point.y,
+                                    particle.size * 0.5,
+                                    0,
+                                    Math.PI * 2,
+                                );
+                                this.ctx.fillStyle =
+                                    "hsla(" +
+                                    particle.hue +
+                                    ", 100%, " +
+                                    particle.brightness +
+                                    "%, " +
+                                    point.alpha * 0.5 +
+                                    ")";
                                 this.ctx.fill();
                             });
                         }
 
                         this.ctx.beginPath();
-                        this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-                        this.ctx.fillStyle = 'hsla(' + particle.hue + ', 100%, ' + particle.brightness + '%, ' + particle.alpha + ')';
+                        this.ctx.arc(
+                            particle.x,
+                            particle.y,
+                            particle.size,
+                            0,
+                            Math.PI * 2,
+                        );
+                        this.ctx.fillStyle =
+                            "hsla(" +
+                            particle.hue +
+                            ", 100%, " +
+                            particle.brightness +
+                            "%, " +
+                            particle.alpha +
+                            ")";
                         this.ctx.fill();
 
                         this.ctx.beginPath();
-                        this.ctx.arc(particle.x, particle.y, particle.size * 1.5, 0, Math.PI * 2);
-                        this.ctx.fillStyle = 'hsla(' + particle.hue + ', 100%, ' + particle.brightness + '%, ' + (particle.alpha * 0.3) + ')';
+                        this.ctx.arc(
+                            particle.x,
+                            particle.y,
+                            particle.size * 1.5,
+                            0,
+                            Math.PI * 2,
+                        );
+                        this.ctx.fillStyle =
+                            "hsla(" +
+                            particle.hue +
+                            ", 100%, " +
+                            particle.brightness +
+                            "%, " +
+                            particle.alpha * 0.3 +
+                            ")";
                         this.ctx.fill();
                     });
                 }
             }
 
             // Setup
-            const canvas = document.getElementById('fireworks');
+            const canvas = document.getElementById("fireworks");
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            const ctx = canvas.getContext('2d');
+            const ctx = canvas.getContext("2d");
             const fireworks = [];
 
             // Animation loop
             function animate() {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+                ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 if (Math.random() < 0.08) {
                     const firework = new Firework(canvas);
                     firework.createParticles(
                         Math.random() * canvas.width,
-                        Math.random() * (canvas.height * 0.8)
+                        Math.random() * (canvas.height * 0.8),
                     );
                     fireworks.push(firework);
                 }
@@ -233,7 +281,7 @@
             animate();
 
             // Resize handler
-            window.addEventListener('resize', () => {
+            window.addEventListener("resize", () => {
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
             });
